@@ -117,14 +117,6 @@
 			<div class="span3 textright"><strong>{$addon.pricing}</strong></div>
 		</div>
 		{if !$smarty.foreach.addons.last}<hr>{/if}
-<!--
-		<div class="control-group">
-			<div class="controls">
-				<label class="checkbox inline">{$addon.checkbox} {$addon.name}</label><span class="pull-right">{$addon.pricing}</span>
-				<span class="help-block">{if $addon.description}{$addon.description}{/if}</span>
-			</div>
-		</div>
--->
 		{/foreach}
 	</fieldset>
 	{/if}
