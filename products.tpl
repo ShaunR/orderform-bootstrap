@@ -22,14 +22,14 @@
 		<div class="page-header">
 			<h3>{$LANG.ordertitle} {$LANG.ordercategories}</h3>
 		</div>
-		<div class="">
+		<div>
 			<ul class="nav nav-pills nav-stacked">
 			{foreach key=num item=productgroup from=$productgroups}
-		   {if $gid eq $productgroup.gid}
-  	 	   <li class="active"><a href="{$smarty.server.PHP_SELF}?gid={$productgroup.gid}" title="{$productgroup.name}">{$productgroup.name}</a></li>
-		   {else}
-		      <li><a href="{$smarty.server.PHP_SELF}?gid={$productgroup.gid}" title="{$productgroup.name}">{$productgroup.name}</a></li>
-		   {/if}
+			{if $gid eq $productgroup.gid}
+  	 		<li class="active"><a href="{$smarty.server.PHP_SELF}?gid={$productgroup.gid}" title="{$productgroup.name}">{$productgroup.name}</a></li>
+			{else}
+				<li><a href="{$smarty.server.PHP_SELF}?gid={$productgroup.gid}" title="{$productgroup.name}">{$productgroup.name}</a></li>
+			{/if}
 			{/foreach}
 			{if $loggedin}
 				<li><a href="{$smarty.server.PHP_SELF}?gid=addons" title="{$LANG.cartproductaddons}">{$LANG.cartproductaddons}</a></li>
@@ -37,16 +37,17 @@
 			{/if}
 				{if $registerdomainenabled}<li><a href="{$smarty.server.PHP_SELF}?a=add&amp;domain=register" title="{$LANG.registerdomain}">{$LANG.registerdomain}</a></li>{/if}
 				{if $transferdomainenabled}<li><a href="{$smarty.server.PHP_SELF}?a=add&amp;domain=transfer" title="{$LANG.transferdomain}">{$LANG.transferdomain}</a></li>{/if}
-		   </ul>
+			</ul>
 		</div>
 	</div>
 	<div class="span9">
 		<div class="page-header">
 			<h3>{$LANG.cartbrowse}</h3>
 		</div>
+		<ul class="thumbnails">
 		{foreach key=num item=product from=$products}
-			<div class="">
-				<div class="row-fluid">
+			<li class="thumbnail span9">
+				<div class="row-fluid" style="padding: 0px 10px 10px 10px;">
 					<div class="span8">
 						<h3 class="text-info">{$product.name}{if $product.qty!=""} <small>({$product.qty} {$LANG.orderavailable})</small>{/if}</h3>
 						<p>{$product.description}</p>
@@ -77,8 +78,7 @@
 						{/if}
 					</div>
 				</div>
-			</div>
-			<hr>
+			</li>
 		{/foreach}
 
 		<div class="textcenter" style="margin-bottom:30px;">
