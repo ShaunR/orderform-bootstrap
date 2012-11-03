@@ -70,7 +70,7 @@
 				<tr>
 					<td>{$result.domain}</td>
 					<td class="{if $result.status eq $searchvar}text-success{else}text-error{/if}">
-						<label class="checkbox inline">{if $result.status eq $searchvar} <input type="checkbox" name="domains[]" value="{$result.domain}"{if $result.domain|in_array:$domains} checked{/if}> {$LANG.domainavailable}{else}{$LANG.domainunavailable}{/if}</label>
+						<label class="checkbox inline">{if $result.status eq $searchvar} <input type="checkbox" name="domains[]" value="{$result.domain}"{if $result.domain|in_array:$domains} checked{/if}> {$LANG.domainavailable}{else} {$LANG.domainunavailable}{/if}</label>
 					</td>
 					<td>
 						{if $result.regoptions}
@@ -85,8 +85,8 @@
 			{/foreach}
 			</table>
 			<div class="form-actions textcenter">
-				<input type="submit" class="btn btn-primary" value="{$LANG.addtocart}">
 				<a href="cart.php?a=view" class="btn" title="{$LANG.viewcart}">{$LANG.viewcart}</a>
+				<input type="submit" class="btn btn-primary" value="{$LANG.addtocart}">
 			</div>
 		</form>
 		{else}
