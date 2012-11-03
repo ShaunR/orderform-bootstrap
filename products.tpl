@@ -82,7 +82,7 @@
 		{/foreach}
 
 		<div class="textcenter" style="margin-bottom:30px;">
-			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn btn-large">{$LANG.viewcart}</a>
+			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn">{$LANG.viewcart}</a>
 		</div>
 
 	</div>
