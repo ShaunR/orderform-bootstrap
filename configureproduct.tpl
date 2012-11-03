@@ -145,8 +145,9 @@
 	</fieldset>
 	{/if}
 
-	<div class="form-actions textcenter">
-		{if $firstconfig}<input type="submit" class="btn btn-large" value="{$LANG.addtocart}">{else}<input type="submit" clas="btn btn-large" value="{$LANG.updatecart}">{/if}
+	<div class="textcenter form-actions">
+		<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn">{$LANG.viewcart}</a>
+		{if $firstconfig}<input type="submit" class="btn btn-primary" value="{$LANG.addtocart}">{else}<input type="submit" clas="btn btn-large" value="{$LANG.updatecart}">{/if}
 	</div>
 
 </form>
