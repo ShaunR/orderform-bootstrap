@@ -53,7 +53,7 @@
 						<p>{$product.description}</p>
 					</div>
 					<div class="span4 textcenter">
-						<div class="aert aert-danger">
+						<div>
 						{if $product.bid}
 							<strong>{$LANG.bundledeal}</strong><br>
 							{if $product.displayprice}<div class="lead">{$product.displayprice}</div>{/if}
