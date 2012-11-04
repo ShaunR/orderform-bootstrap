@@ -72,9 +72,9 @@
 						{/if}
 						</div>
 						{if $product.qty eq "0"}
-							<a href="javascript:void(0)" class="btn btn-inverse btn-large disabled">{$LANG.ordernowbutton}</a>
+						<a href="javascript:void(0)" class="btn btn-inverse btn-large disabled">{$LANG.ordernowbutton}</a>
 						{else}
-							<a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="btn btn-primary btn-large"><i class="icon icon-shopping-cart icon-white"></i> {$LANG.ordernowbutton}</a>
+						<a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="btn btn-primary btn-large"><i class="icon icon-shopping-cart icon-white"></i> {$LANG.ordernowbutton}</a>
 						{/if}
 					</div>
 				</div>
