@@ -57,6 +57,8 @@
 						{if $product.bid}
 							<strong>{$LANG.bundledeal}</strong><br>
 							{if $product.displayprice}<div class="lead">{$product.displayprice}</div>{/if}
+						{elseif $product.paytype eq "free"}
+							<div class="lead" style="margin:10px 0px">{$LANG.orderfree|strtolower|ucfirst}</div>
 						{else}
 							<strong>{$LANG.startingfrom}</strong><br>
 							<div class="lead">
