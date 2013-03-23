@@ -612,7 +612,7 @@
 				</select>
 				 / 
 				<select name="ccexpiryyear" class="span1">
-					{foreach from=$years item=year}
+					{foreach from=$expiryyears item=year}
 					<option{if $ccexpiryyear eq $year} selected="selected"{/if}>{$year}</option>
 					{/foreach}
 				</select>
@@ -622,8 +622,17 @@
 		<div class="control-group newccinfo{if $clientsdetails.cclastfour && $ccinfo neq "new"} hide{/if}">
 			<label class="control-label">{$LANG.creditcardcardstart}</label>
 			<div class="controls">
-				<input type="text" name="ccstartmonth" class="span1" size="2" maxlength="2" value="{$ccstartmonth}"> / <input type="text" name="ccstartyear" class="span1" size="2" maxlength="2" value="{$ccstartyear}">
-				<span class="help-inline">(MM/YY)</span>
+				<select name="ccstartmonth" id="ccstartmonth">
+					{foreach from=$months item=month}
+					<option{if $ccstartmonth eq $month} selected="selected"{/if}>{$month}</option>
+					{/foreach}
+				</select>
+				/ 
+				<select name="ccstartyear">
+					{foreach from=$startyears item=year}
+					<option{if $ccstartyear eq $year} selected="selected"{/if}>{$year}</option>
+					{/foreach}
+				</select>
 			</div>
 		</div>
 		<div class="control-group newccinfo{if $clientsdetails.cclastfour && $ccinfo neq "new"} hide{/if}">
