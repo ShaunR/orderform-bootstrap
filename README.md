@@ -8,7 +8,7 @@ Order form template for use with the WHMCS billing software.
 Requirements
 -----------
 
-This template was designed to run along side out bootstrap client area template.
+This template was designed to run along side our bootstrap client area template.
 
 
 
