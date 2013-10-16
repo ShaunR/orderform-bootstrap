@@ -44,20 +44,23 @@
 		<div class="page-header">
 			<h3>{$LANG.cartbrowse}</h3>
 		</div>
-		<div class="list-group">
 		{foreach key=num item=product from=$products}
-			<div class="list-group-item">
-				<h4 class="list-group-item-heading text-info">{$product.name}{if $product.qty!=""} <small>({$product.qty} {$LANG.orderavailable})</small>{/if}</h4>
-				<p class="list-group-item-text">{$product.description}</p>
-				<div class="span4 text-center">
-					<div>
-					{if $product.bid}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h3 class="text-info" style="margin-top:0px">{$product.name}{if $product.qty!=""} <small>({$product.qty} {$LANG.orderavailable})</small>{/if}</h3>
+						<p>{$product.description}</p>
+					</div>
+					<div class="col-md-4 text-center">
+						{if $product.bid}
 						<strong>{$LANG.bundledeal}</strong><br>
 						{if $product.displayprice}<div class="lead">{$product.displayprice}</div>{/if}
-					{elseif $product.paytype eq "free"}
+						{elseif $product.paytype eq "free"}
 						<div class="lead" style="margin:10px 0px">{$LANG.orderfree|strtolower|ucfirst}</div>
-					{else}
-						<strong>{$LANG.startingfrom}</strong><br>
+						{else}
+						<strong>{$LANG.startingfrom}</strong>
+						<br>
 						<div class="lead">
 							{$product.pricing.minprice.price} 
 							{if $product.pricing.minprice.cycle eq "monthly"}{$LANG.orderpaymenttermmonthly}
@@ -68,20 +71,20 @@
 							{elseif $product.pricing.minprice.cycle eq "triennially"}{$LANG.orderpaymenttermtriennially}
 							{/if}
 						</div>
-					{/if}
+						{/if}
+						{if $product.qty eq "0"}
+						<a href="javascript:void(0)" class="btn btn-primary btn-lg disabled">{$LANG.ordernowbutton}</a>
+						{else}
+						<a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> {$LANG.ordernowbutton}</a>
+						{/if}
 					</div>
-					{if $product.qty eq "0"}
-					<a href="javascript:void(0)" class="btn btn-primary btn-lg disabled">{$LANG.ordernowbutton}</a>
-					{else}
-					<a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="btn btn-primary btn-lg"><i class="icon icon-shopping-cart icon-white"></i> {$LANG.ordernowbutton}</a>
-					{/if}
 				</div>
 			</div>
-		{/foreach}
 		</div>
+		{/foreach}
 
-		<div class="text-center">
-			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn btn-default">{$LANG.viewcart}</a>
+		<div class="text-center form-group">
+			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn btn-info">{$LANG.viewcart}</a>
 		</div>
 
 	</div>
