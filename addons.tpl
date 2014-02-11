@@ -3,7 +3,7 @@
 </div>
 
 <div class="row">
-	<div class="span3">
+	<div class="col-md-3">
 		<div class="page-header">
 			<h3>{$LANG.ordertitle} {$LANG.ordercategories}</h3>
 		</div>
@@ -21,29 +21,34 @@
 			</ul>
 		</div>
 	</div>
-	<div class="span9">
+	<div class="col-md-9">
 		<div class="page-header">
 			<h3>{$LANG.cartproductaddons}</h3>
 		</div>
-		<ul class="thumbnails">
-			{foreach from=$addons item=addon}
-			<li class="thumbnail span9">
-				<form method="post" action="{$smarty.server.PHP_SELF}?a=add">
-					<input type="hidden" name="aid" value="{$addon.id}">
-					<div class="row-fluid" style="padding: 0px 10px 10px 10px;">
-						<div class="span8">
-							<h3 class="text-info">{$addon.name}</h3>
+		{foreach from=$addons item=addon}
+		<form method="post" action="{$smarty.server.PHP_SELF}?a=add">
+			<input type="hidden" name="aid" value="{$addon.id}">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-8">
+							<h3 class="text-info" style="margin-top:0px">{$addon.name}</h3>
 							<p>{$addon.description}</p>
+							<hr>
 							<fieldset class="form-inline">
-								<label><strong>{$LANG.cartchooseproduct}</strong></label>
-								<select name="productid">
-									{foreach from=$addon.productids item=product}
-									<option value="{$product.id}">{$product.product}{if $product.domain} - {$product.domain}{/if}</option>
-									{/foreach}
-								</select>
+								<div class="form-group">
+									<label>{$LANG.cartchooseproduct}:</label>
+								</div>
+								<div class="form-group">
+									<select name="productid" class="form-control">
+										{foreach from=$addon.productids item=product}
+										<option value="{$product.id}">{$product.product}{if $product.domain} - {$product.domain}{/if}</option>
+										{/foreach}
+									</select>
+								</div>
 							</fieldset>
 						</div>
-						<div class="span4 textcenter">
+						<div class="col-md-4 text-center">
 							<div class="lead" style="margin-top: 20px;">
 								{if $addon.free}
 								{$LANG.orderfree}
@@ -52,14 +57,15 @@
 								{if $addon.setupfee}<br />+ {$addon.setupfee} {$LANG.ordersetupfee}{/if}
 								{/if}
 							</div>
-							<button type="submit" class="btn btn-primary btn-large"><i class="icon icon-shopping-cart icon-white"></i> {$LANG.ordernowbutton}</button>
+							<button type="submit" class="btn btn-primary btn-large"><span class="glyphicon glyphicon-shopping-cart"></span> {$LANG.ordernowbutton}</button>
 						</div>
 					</div>
-				</form>
-			</li>
+				</div>
+			</div>
+		</form>
 		{/foreach}
 
-		<div class="textcenter" style="margin-bottom:30px;">
+		<div class="text-center" style="margin-bottom:30px;">
 			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn">{$LANG.viewcart}</a>
 		</div>
 
