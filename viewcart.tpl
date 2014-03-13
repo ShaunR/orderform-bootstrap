@@ -271,16 +271,14 @@
 </script>
 {/literal}
 
-<div class="panel panel-default">
-	<div class="panel-heading">{$LANG.yourdetails}</div>
-	<div class="panel-body">
-
-		<form method="post" action="{$smarty.server.PHP_SELF}?a=checkout">
-			<input type="hidden" name="submit" value="true">
-			<input type="hidden" name="custtype" id="custtype" value="{$custtype}">
-
+<form method="post" action="{$smarty.server.PHP_SELF}?a=checkout">
+	<input type="hidden" name="submit" value="true">
+	<input type="hidden" name="custtype" id="custtype" value="{$custtype}">
+	<div class="panel panel-default">
+		<div class="panel-heading">{$LANG.yourdetails}</div>
+		<div class="panel-body">
 			<fieldset id="loginform" class="form-horizontal"{if $custtype eq "existing" && !$loggedin}{else} style="display:none"{/if}>
-				<p>{$LANG.newcustomersignup|sprintf2:'<a href="javascript:void(0)" onclick="toggleLoginForm();return false;">':'</a>'}</a></p>
+				<p>{$LANG.newcustomersignup|sprintf2:'<a href="javascript:void(0)" onclick="toggleLoginForm();return false;">':'</a>'}</p>
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="loginemail">{$LANG.loginemail}</label>
 					<div class="col-md-4">
@@ -587,129 +585,162 @@
 		</div>
 	</fieldset>
 	{/if}
-
+	
 	<div class="panel panel-default">
 		<div class="panel-heading">{$LANG.orderpaymentmethod}</div>
 		<div class="panel-body">
-			<fieldset class="form-inline text-center">
-				{foreach key=num item=gateway from=$gateways}
+			<fieldset id="fieldset-payment-method">
+			{foreach key=num item=gateway from=$gateways}
 				<label class="radio-inline">
-					<input type="radio" name="paymentmethod" value="{$gateway.sysname}" onclick="{if $gateway.type eq 'CC'}$('#ccfields').show();{else}$('#ccfields').hide();{/if}"{if $selectedgateway eq $gateway.sysname} checked="checked"{/if}> {$gateway.name}
+					<input type="radio" name="paymentmethod" value="{$gateway.sysname}" onclick="{if $gateway.type eq 'CC'}showCCFields();{else}hideCCFields();{/if}"{if $selectedgateway eq $gateway.sysname} checked="checked"{/if}> {$gateway.name}
 				</label>
-				{/foreach}
+			{/foreach}
 			</fieldset>
+			<script>
+			{literal}
+				function showCCFields() {
+					$('#fieldset-payment-method-creditcard').show();
+				}
+				function hideCCFields() {
+					$('#fieldset-payment-method-creditcard').hide();
+				}
 
-			<fieldset id="ccfields" class="form-horizontal"{if $selectedgatewaytype neq "CC"} style="display:none"{/if}>
+				$(function() {
+					$('input[name=ccinfo]').change(function() {
+						if($(this).val() == 'useexisting') {
+							$('#cctype').hide();
+							$('#ccnumber').hide();
+							$('#ccexpiry').hide();
+							$('#ccstart').hide();
+							$('#ccissue').hide();
+							$('#ccstore').hide();
+						} else {
+							$('#cctype').show();
+							$('#ccnumber').show();
+							$('#ccexpiry').show();
+							$('#ccstart').show();
+							$('#ccissue').show();
+							$('#ccstore').show();
+						}
+					});
+					$('input[name=ccinfo]:checked').change();
+				});
+			{/literal}
+			</script>
+			<fieldset id="fieldset-payment-method-creditcard" style="overflow:none">
 				<hr>
 				{if $clientsdetails.cclastfour}
 				<div class="form-group">
-					<div class="col-md-12">
-						<div class="radio">
-							<label>
-								<input type="radio" name="ccinfo" value="useexisting" id="useexisting" onclick="$('#newccfields').hide();"{if $clientsdetails.cclastfour} checked="checked"{else} disabled="disabled"{/if}> {$LANG.creditcarduseexisting}{if $clientsdetails.cclastfour} ({$clientsdetails.cclastfour}){/if}
-							</label>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-md-12">
-						<div class="radio">
-							<label>
-								<input type="radio" name="ccinfo" value="new" id="new" onclick="$('#newccfields').show();"{if !$clientsdetails.cclastfour || $ccinfo eq "new"} checked="checked"{/if}> {$LANG.creditcardenternewcard}
-							</label>
-						</div>
-					</div>
+					<label class="radio-inline">
+						<input type="radio" name="ccinfo" value="useexisting"{if $clientsdetails.cclastfour} checked="checked"{/if}> {$LANG.creditcarduseexisting} ({$clientsdetails.cclastfour})
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="ccinfo" value="new" id="new"{if !$clientsdetails.cclastfour || $ccinfo eq "new"} checked="checked"{/if}> {$LANG.creditcardenternewcard}
+					</label>
 				</div>
 				{else}
-				<div class="form-group">
-					<div class="col-md-12">
-						<input type="hidden" name="ccinfo" value="new">
-					</div>
-				</div>
+				<input type="hidden" name="ccinfo" value="new">
 				{/if}
-				<div id="newccfields" class="well well-sm"{if $clientsdetails.cclastfour && $ccinfo neq "new"} style="display:none"{/if}>
-					<div class="form-group">
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcardtype}</label>
-							<select name="cctype" class="form-control">
-								{foreach key=num item=cardtype from=$acceptedcctypes}
-								<option{if $cctype eq $cardtype} selected="selected"{/if}>{$cardtype}</option>
-								{/foreach}
-							</select>
+				<div class="well well-sm">
+					<div class="row">
+						<div class="col-md-6" id="cctype">
+							<div class="form-group">
+								<label>{$LANG.creditcardcardtype}</label>
+								<select name="cctype" class="form-control">
+									{foreach key=num item=cardtype from=$acceptedcctypes}
+									<option{if $cctype eq $cardtype} selected="selected"{/if}>{$cardtype}</option>
+									{/foreach}
+								</select>
+							</div>
 						</div>
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcardnumber}</label>
-							<input type="text" name="ccnumber" size="30" value="{$ccnumber}" autocomplete="off" class="form-control">
+						<div class="col-md-6" id="ccnumber">
+							<div class="form-group">
+								<label>{$LANG.creditcardcardnumber}</label>
+								<input type="text" name="ccnumber" value="{$ccnumber}" autocomplete="off" class="form-control">
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcardexpires}</label>
-							<div class="row">
-								<div class="col-md-5">
-									<select name="ccexpirymonth" id="ccexpirymonth" class="form-control">
-										{foreach from=$months item=month}
-										<option{if $ccexpirymonth eq $month} selected="selected"{/if}>{$month}</option>
-									{/foreach}
-									</select>
-								</div>
-								<div class="col-md-2 text-center"><p class="form-control-static">/</p></div>
-								<div class="col-md-5">
-									<select name="ccexpiryyear" class="form-control">
-										{foreach from=$expiryyears item=year}
-										<option{if $ccexpiryyear eq $year} selected="selected"{/if}>{$year}</option>
-										{/foreach}
-									</select>	
+					<div class="row">
+						<div class="col-md-6" id="ccexpiry">
+							<div class="form-group">
+								<label>{$LANG.creditcardcardexpires}</label>
+								<div class="row">
+									<div class="col-md-5">
+										<select name="ccexpirymonth" id="ccexpirymonth" class="form-control">
+											{foreach from=$months item=month}
+											<option{if $ccexpirymonth eq $month} selected="selected"{/if}>{$month}</option>
+											{/foreach}
+										</select>
+									</div>
+									<div class="col-md-2 text-center">
+										<p class="help-block">/</p>
+									</div>
+									<div class="col-md-5">
+										<select name="ccexpiryyear" class="form-control">
+											{foreach from=$expiryyears item=year}
+											<option{if $ccexpiryyear eq $year} selected="selected"{/if}>{$year}</option>
+											{/foreach}
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcvvnumber}</label>
-							<div class="row">
-								<div class="col-md-4">
-									<input type="text" name="cccvv" value="{$cccvv}" class="form-control" size="5" autocomplete="off">
-								</div>
-								<div class="col-md-8">
-									<span class="help-block"><a href="#" onclick="window.open('images/ccv.gif','','width=280,height=200,scrollbars=no,top=100,left=100');return false">{$LANG.creditcardcvvwhere}</a></span>
+						<div class="col-md-6" id="cccvv">
+							<div class="form-group">
+								<label>{$LANG.creditcardcvvnumber}</label>
+								<div class="row">
+									<div class="col-md-4">
+										<input type="text" name="cccvv" value="{$cccvv}" class="form-control" size="5" autocomplete="off">
+									</div>
+									<div class="col-md-8">
+										<span class="help-block"><a href="#" onclick="window.open('images/ccv.gif','','width=280,height=200,scrollbars=no,top=100,left=100');return false">{$LANG.creditcardcvvwhere}</a></span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					{if $showccissuestart}
-					<div class="form-group">
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcardstart}</label>
-							<div class="row">
-								<div class="col-md-5">
-									<select name="ccstartmonth" id="ccstartmonth" class="form-control">
-										{foreach from=$months item=month}
-										<option{if $ccstartmonth eq $month} selected="selected"{/if}>{$month}</option>
-										{/foreach}
-									</select>
-								</div>
-								<div class="col-md-2 text-center"><p class="form-control-static">/</p></div>
-								<div class="col-md-5">
-									<select name="ccstartyear" class="form-control">
-										{foreach from=$startyears item=year}
-										<option{if $ccstartyear eq $year} selected="selected"{/if}>{$year}</option>
-										{/foreach}
-									</select>
+					<div class="row">
+						<div class="col-md-6" id="ccstart">
+							<div class="form-group">
+								<label>{$LANG.creditcardcardstart}</label>
+								<div class="row">
+									<div class="col-md-5">
+										<select name="ccstartmonth" id="ccstartmonth" class="form-control">
+											{foreach from=$months item=month}
+											<option{if $ccstartmonth eq $month} selected="selected"{/if}>{$month}</option>
+											{/foreach}
+										</select>
+									</div>
+									<div class="col-md-2 text-center">
+										<span class="help-block">/</span>
+									</div>
+									<div class="col-md-5">
+										<select name="ccexpiryyear" class="form-control">
+											{foreach from=$expiryyears item=year}
+											<option{if $ccexpiryyear eq $year} selected="selected"{/if}>{$year}</option>
+											{/foreach}
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<label>{$LANG.creditcardcardissuenum}</label>
-							<input type="text" name="ccissuenum" value="{$ccissuenum}" class="form-control" size="5" maxlength="3">
+						<div class="col-md-6" id="ccissue">
+							<div class="form-group">
+								<label>{$LANG.creditcardcardissuenum}</label>
+								<input type="text" name="ccissuenum" value="{$ccissuenum}" class="form-control" size="5" maxlength="3">
+							</div>
 						</div>
 					</div>
-				{/if}
-				{if $shownostore}
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" name="nostore"> {$LANG.creditcardnostore}
-					</label>
+					{/if}
+					<div class="form-group" id="ccstore">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="nostore"> {$LANG.creditcardnostore}
+							</label>
+						</div>
+					</div>
 				</div>
-				{/if}
 			</fieldset>
 		</div>
 	</div>
@@ -737,7 +768,7 @@
 			<input type="submit" class="btn btn-primary" value="{$LANG.completeorder}"{if $cartitems eq 0} disabled="disabled"{/if} onclick="this.value='{$LANG.pleasewait}'">
 		</div>
 		<p class="text-center">
-			<img src="images/padlock.gif" border="0" class="imgfloat" alt="Secure Transaction"> {$LANG.ordersecure} (<strong>{$ipaddress}</strong>) {$LANG.ordersecure2}
+			<img src="images/padlock.gif" class="imgfloat" alt="Secure Transaction"> {$LANG.ordersecure} (<strong>{$ipaddress}</strong>) {$LANG.ordersecure2}
 		</p>
 	</div>
 
