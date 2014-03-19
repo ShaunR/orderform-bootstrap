@@ -66,7 +66,7 @@
 		{/foreach}
 
 		<div class="text-center" style="margin-bottom:30px;">
-			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn">{$LANG.viewcart}</a>
+			<a href="cart.php?a=view" title="{$LANG.viewcart}" class="btn btn-default">{$LANG.viewcart}</a>
 		</div>
 
 	</div>
