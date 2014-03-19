@@ -592,20 +592,22 @@
 			<fieldset id="fieldset-payment-method">
 			{foreach key=num item=gateway from=$gateways}
 				<label class="radio-inline">
-					<input type="radio" name="paymentmethod" value="{$gateway.sysname}" onclick="{if $gateway.type eq 'CC'}showCCFields();{else}hideCCFields();{/if}"{if $selectedgateway eq $gateway.sysname} checked="checked"{/if}> {$gateway.name}
+					<input type="radio" name="paymentmethod" value="{$gateway.sysname}"{if $gateway.type eq 'CC'} class="toggle-creditcard-fields"{/if}{if $selectedgateway eq $gateway.sysname} checked="checked"{/if}> {$gateway.name}
 				</label>
 			{/foreach}
 			</fieldset>
 			<script>
 			{literal}
-				function showCCFields() {
-					$('#fieldset-payment-method-creditcard').show();
-				}
-				function hideCCFields() {
-					$('#fieldset-payment-method-creditcard').hide();
-				}
-
 				$(function() {
+					$('input[name=paymentmethod]').change(function() {
+						if($(this).hasClass('toggle-creditcard-fields')) {
+							$('#fieldset-payment-method-creditcard').show();
+						} else {
+							$('#fieldset-payment-method-creditcard').hide();
+						}
+					});
+					$('input[name=paymentmethod]:checked').change();
+
 					$('input[name=ccinfo]').change(function() {
 						if($(this).val() == 'useexisting') {
 							$('#cctype').hide();
@@ -627,7 +629,7 @@
 				});
 			{/literal}
 			</script>
-			<fieldset id="fieldset-payment-method-creditcard" style="overflow:none">
+			<fieldset id="fieldset-payment-method-creditcard">
 				<hr>
 				{if $clientsdetails.cclastfour}
 				<div class="form-group">
