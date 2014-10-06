@@ -48,6 +48,7 @@
 							<label><input type="checkbox" name="idprotection[{$num}]"{if $domain.idprotectionselected} checked="checked"{/if}>{$LANG.domainidprotection} ({$domain.idprotectionprice})</label>
 						</div>
 					{/if}
+					</div>
 				</div>
 				{foreach from=$domain.fields key=domainfieldname item=domainfield}
 				<div class="form-group">
